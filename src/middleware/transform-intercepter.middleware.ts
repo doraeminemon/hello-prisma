@@ -7,6 +7,7 @@ import {
 import { plainToClass } from 'class-transformer';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SerializerKey } from './serialize.decorator';
 
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, any> {
@@ -16,7 +17,10 @@ export class TransformInterceptor<T> implements NestInterceptor<T, any> {
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       map((data) => {
-        const dtoType = Reflect.getMetadata('dtoType', context.getHandler());
+        const dtoType = Reflect.getMetadata(
+          SerializerKey,
+          context.getHandler(),
+        );
         console.log({
           handler: context.getHandler(),
           dtoType,
