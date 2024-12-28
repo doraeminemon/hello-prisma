@@ -14,8 +14,16 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String?
   email     String?
-  createdAt DateTime @default(now()) @db.Timestamptz()
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  Comment   Comment[]
+}
+
+model Comment {
+  id      Int     @id @default(autoincrement())
+  content String?
+  userId  Int
+  user    User    @relation(references: [id], fields: [userId])
 }
